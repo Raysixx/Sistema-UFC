@@ -23,31 +23,24 @@ import javax.swing.JComboBox;
 import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.Cursor;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
 
 public class Cadastro extends JFrame {
 
-	private JPanel contentPane;
-	private JTextField Nome;
-	private JTextField Idade;
-	private JTextField Peso;
+	private final JTextField Nome;
+	private final JTextField Idade;
+	private final JTextField Peso;
 
 	/**
 	 * Launch the application.
 	 */
 	public void AbreCadastro(Statement s) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Cadastro frame = new Cadastro(s);
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-					//frame.setUndecorated(true);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				Cadastro frame = new Cadastro(s);
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -149,12 +142,10 @@ public class Cadastro extends JFrame {
 		setTitle("Menu");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1360, 768);
-		contentPane = new JPanel()
-		{
-			public void paintComponent(Graphics g)
-			{
+		JPanel contentPane = new JPanel() {
+			public void paintComponent(Graphics g) {
 				Image img = Toolkit.getDefaultToolkit().getImage(
-						TelaInicial.class.getResource("/Imagem/Ufc.jpg"));
+						TelaInicial.class.getResource(new TelaInicial().imgPath));
 				g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
 			}
 		};
@@ -181,7 +172,7 @@ public class Cadastro extends JFrame {
 		lblSexo.setForeground(new Color(255, 255, 255));
 		lblSexo.setFont(new Font("Arial", Font.PLAIN, 18));
 		
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox<>();
 		comboBox.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 15));
 		comboBox.addItem("Masculino");
 		comboBox.addItem("Feminino");
@@ -199,7 +190,7 @@ public class Cadastro extends JFrame {
 		lblPas.setForeground(new Color(255, 255, 255));
 		lblPas.setFont(new Font("Arial", Font.PLAIN, 18));
 		
-		JComboBox comboBox_1 = new JComboBox();
+		JComboBox<String> comboBox_1 = new JComboBox<>();
 		comboBox_1.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 15));
 		comboBox_1.addItem("Brasil");
 		comboBox_1.addItem("Estados Unidos");
@@ -213,23 +204,17 @@ public class Cadastro extends JFrame {
 		comboBox_1.setSelectedItem(null);
 		
 		JButton button = new JButton("Sair");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Fechar();
-			}
-		});
+		button.addActionListener(arg0 -> Fechar());
 		button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		button.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
 		button.setBackground(Color.LIGHT_GRAY);
 		button.setAlignmentX(0.5f);
 		
 		JButton button_1 = new JButton("Voltar");
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Menu m = new Menu();
-				m.AbreMenu();
-				Fechar();
-			}
+		button_1.addActionListener(e -> {
+			Menu m = new Menu();
+			m.AbreMenu();
+			Fechar();
 		});
 		button_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		button_1.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
@@ -237,65 +222,63 @@ public class Cadastro extends JFrame {
 		button_1.setAlignmentX(0.5f);
 		
 		JButton btnCadastrar = new JButton("Cadastrar");
-		btnCadastrar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try
+		btnCadastrar.addActionListener(e -> {
+			try
+			{
+			if(!TestaString(Nome.getText())) //Testa se nome é uma string
+			{
+				String nome = Nome.getText();
+				if(TestaString(Idade.getText())) //Testa se idade é um número
 				{
-				if(TestaString(Nome.getText())==false) //Testa se nome é uma string
-				{
-					String nome = Nome.getText();
-					if(TestaString(Idade.getText())==true) //Testa se idade é um número
+					if(TestaNum(Idade.getText())) //Testa se idade é int
 					{
-						if(TestaNum(Idade.getText())==true) //Testa se idade é int
+						int idade = Integer.parseInt(Idade.getText());
+						if(idade>=18 && idade<100) //Testa se a idade está dentro dos parâmetros
 						{
-							int idade = Integer.parseInt(Idade.getText());
-							if(idade>=18 && idade<100) //Testa se a idade está dentro dos parâmetros
+							if(comboBox.getSelectedItem()!=null) //Testa se o sexo foi selecionado
 							{
-								if(comboBox.getSelectedItem()!=null) //Testa se o sexo foi selecionado
+								String sexo = (String) comboBox.getSelectedItem();
+								if(TestaString(Peso.getText())) //Testa se peso é um número
 								{
-									String sexo = (String) comboBox.getSelectedItem();	
-									if(TestaString(Peso.getText())==true) //Testa se peso é um número
+									double peso = Double.parseDouble(Peso.getText());
+									if(comboBox_1.getSelectedItem()!=null) //Testa se o país foi selecionado
 									{
-										Double peso = Double.parseDouble(Peso.getText());
-										if(comboBox_1.getSelectedItem()!=null) //Testa se o país foi selecionado
-										{
-											String país = (String) comboBox_1.getSelectedItem();
-											ResultSet rs = s.executeQuery("select * from Codigos where num = (select max(num) from Codigos)");
-											int id = rs.getInt("num");
-											id++;
-											s.executeUpdate("insert into Lutadores (ID, Nome, Idade, Sexo, Peso, País, Categoria) values (" + id + ", '" + nome + "', " + idade + ", '" + sexo + "', " + peso + ", '" + país + "', '" + VerificaCategoria(peso, sexo) + "');");
-											s.executeUpdate("update Codigos set num = " + id + " where num = " + (id-1));
-											JOptionPane.showMessageDialog(null, "Cadastro feito com sucesso");
-											Nome.setText("");
-											Idade.setText("");
-											comboBox.setSelectedItem(null);
-											Peso.setText("");
-											comboBox_1.setSelectedItem(null);
-										}else {
-											JOptionPane.showMessageDialog(null, "Selecione o País"); //Retorna que o país não foi selecionado
-										}
+										String pais = (String) comboBox_1.getSelectedItem();
+										ResultSet rs = s.executeQuery("select * from Codigos where num = (select max(num) from Codigos)");
+										int id = rs.getInt("num");
+										id++;
+										s.executeUpdate("insert into Lutadores (ID, Nome, Idade, Sexo, Peso, País, Categoria) values (" + id + ", '" + nome + "', " + idade + ", '" + sexo + "', " + peso + ", '" + pais + "', '" + VerificaCategoria(peso, sexo) + "');");
+										s.executeUpdate("update Codigos set num = " + id + " where num = " + (id-1));
+										JOptionPane.showMessageDialog(null, "Cadastro feito com sucesso");
+										Nome.setText("");
+										Idade.setText("");
+										comboBox.setSelectedItem(null);
+										Peso.setText("");
+										comboBox_1.setSelectedItem(null);
 									}else {
-										JOptionPane.showMessageDialog(null, "Peso inválido"); //Retorna que peso não é um número
+										JOptionPane.showMessageDialog(null, "Selecione o País"); //Retorna que o país não foi selecionado
 									}
 								}else {
-									JOptionPane.showMessageDialog(null, "Selecione o sexo"); //Retorna que o sexo não foi selecionado
+									JOptionPane.showMessageDialog(null, "Peso inválido"); //Retorna que peso não é um número
 								}
 							}else {
-								JOptionPane.showMessageDialog(null, "Idade fora dos parâmetros"); //Retorna que a idade está fora dos parâmetros
+								JOptionPane.showMessageDialog(null, "Selecione o sexo"); //Retorna que o sexo não foi selecionado
 							}
 						}else {
-							JOptionPane.showMessageDialog(null, "Idade inválida"); //Retorna que idade não é int
+							JOptionPane.showMessageDialog(null, "Idade fora dos parâmetros"); //Retorna que a idade está fora dos parâmetros
 						}
 					}else {
-						JOptionPane.showMessageDialog(null, "Idade inválida"); // Retorna que idade não é um número
+						JOptionPane.showMessageDialog(null, "Idade inválida"); //Retorna que idade não é int
 					}
 				}else {
-					JOptionPane.showMessageDialog(null, "Nome inválido"); //Retorna que nome não é String
+					JOptionPane.showMessageDialog(null, "Idade inválida"); // Retorna que idade não é um número
 				}
-				}catch (Exception e2)
-				{
-					e2.printStackTrace();
-				}
+			}else {
+				JOptionPane.showMessageDialog(null, "Nome inválido"); //Retorna que nome não é String
+			}
+			}catch (Exception e2)
+			{
+				e2.printStackTrace();
 			}
 		});
 		btnCadastrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

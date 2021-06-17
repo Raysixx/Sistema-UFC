@@ -15,8 +15,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Cursor;
 import javax.swing.JLabel;
@@ -24,22 +22,17 @@ import javax.swing.SwingConstants;
 
 public class Menu extends JFrame {
 
-	private JPanel contentPane;
-
 	/**
 	 * Launch the application.
 	 */
 	public void AbreMenu() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Menu frame = new Menu();
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-					//frame.setUndecorated(true);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				Menu frame = new Menu();
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -57,15 +50,13 @@ public class Menu extends JFrame {
 	 */
 	public Menu() {
 		setTitle("Menu");
-		s = ConexãoBanco.IniciarBanco(s);
+		s = ConexaoBanco.IniciarBanco(s);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1360, 768);
-		contentPane = new JPanel()
-		{
-			public void paintComponent(Graphics g)
-			{
+		JPanel contentPane = new JPanel() {
+			public void paintComponent(Graphics g) {
 				Image img = Toolkit.getDefaultToolkit().getImage(
-						TelaInicial.class.getResource("/Imagem/Ufc.jpg"));
+						TelaInicial.class.getResource(new TelaInicial().imgPath));
 				g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
 			}
 		};
@@ -73,12 +64,10 @@ public class Menu extends JFrame {
 		setContentPane(contentPane);
 		
 		JButton btnCadastrarLutador = new JButton("Cadastrar lutador");
-		btnCadastrarLutador.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Cadastro c = new Cadastro(s);
-				c.AbreCadastro(s);
-				Fechar();
-			}
+		btnCadastrarLutador.addActionListener(e -> {
+			Cadastro c = new Cadastro(s);
+			c.AbreCadastro(s);
+			Fechar();
 		});
 		btnCadastrarLutador.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCadastrarLutador.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
@@ -86,12 +75,10 @@ public class Menu extends JFrame {
 		btnCadastrarLutador.setAlignmentX(0.5f);
 		
 		JButton btnVerTodosLutadores = new JButton("Lista de todos lutadores");
-		btnVerTodosLutadores.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				ListaCompleta l = new ListaCompleta(s);
-				l.AbreLista(s);
-				Fechar();
-			}
+		btnVerTodosLutadores.addActionListener(arg0 -> {
+			ListaCompleta l = new ListaCompleta(s);
+			l.AbreLista(s);
+			Fechar();
 		});
 		btnVerTodosLutadores.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnVerTodosLutadores.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
@@ -99,12 +86,10 @@ public class Menu extends JFrame {
 		btnVerTodosLutadores.setAlignmentX(0.5f);
 		
 		JButton btnListaPorCategoria = new JButton("Lista por categoria");
-		btnListaPorCategoria.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				ListaEspecifica le = new ListaEspecifica(s);
-				le.AbreLista(s);
-				Fechar();
-			}
+		btnListaPorCategoria.addActionListener(arg0 -> {
+			ListaEspecifica le = new ListaEspecifica(s);
+			le.AbreLista(s);
+			Fechar();
 		});
 		btnListaPorCategoria.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnListaPorCategoria.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
@@ -116,12 +101,10 @@ public class Menu extends JFrame {
 		label.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 58));
 		
 		JButton btnVerificarPeso = new JButton("Verificar categoria");
-		btnVerificarPeso.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				VerificarCategoria v = new VerificarCategoria();
-				v.abreVerificarCategoria();
-				Fechar();
-			}
+		btnVerificarPeso.addActionListener(e -> {
+			VerificarCategoria v = new VerificarCategoria();
+			v.abreVerificarCategoria();
+			Fechar();
 		});
 		btnVerificarPeso.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnVerificarPeso.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
@@ -129,11 +112,7 @@ public class Menu extends JFrame {
 		btnVerificarPeso.setAlignmentX(0.5f);
 		
 		JButton button = new JButton("Sair");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Fechar();
-			}
-		});
+		button.addActionListener(e -> Fechar());
 		button.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
 		button.setBackground(Color.LIGHT_GRAY);
 		button.setAlignmentX(0.5f);

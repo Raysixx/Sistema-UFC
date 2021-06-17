@@ -1,6 +1,5 @@
 package Sistema;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -30,23 +29,19 @@ import javax.swing.JScrollPane;
 
 public class ListaCompleta extends JFrame {
 
-	private JPanel contentPane;
-	private JTable table;
+	private final JTable table;
 
 	/**
 	 * Launch the application.
 	 */
 	public void AbreLista(Statement s) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ListaCompleta frame = new ListaCompleta(s);
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-					//frame.setUndecorated(true);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				ListaCompleta frame = new ListaCompleta(s);
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -64,12 +59,10 @@ public class ListaCompleta extends JFrame {
 		setTitle("Lista dos Lutadores");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1360, 768);
-		contentPane = new JPanel()
-		{
-			public void paintComponent(Graphics g)
-			{
+		JPanel contentPane = new JPanel() {
+			public void paintComponent(Graphics g) {
 				Image img = Toolkit.getDefaultToolkit().getImage(
-						TelaInicial.class.getResource("/Imagem/Ufc.jpg"));
+						TelaInicial.class.getResource(new TelaInicial().imgPath));
 				g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
 			}
 		};
@@ -78,22 +71,16 @@ public class ListaCompleta extends JFrame {
 		
 		JButton button = new JButton("Sair");
 		button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Fechar();
-			}
-		});
+		button.addActionListener(e -> Fechar());
 		button.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
 		button.setBackground(Color.LIGHT_GRAY);
 		button.setAlignmentX(0.5f);
 		
 		JButton button_1 = new JButton("Voltar");
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Menu m = new Menu();
-				m.AbreMenu();
-				Fechar();
-			}
+		button_1.addActionListener(e -> {
+			Menu m = new Menu();
+			m.AbreMenu();
+			Fechar();
 		});
 		button_1.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
 		button_1.setBackground(Color.LIGHT_GRAY);

@@ -1,6 +1,5 @@
 package Sistema;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -19,13 +18,10 @@ import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
 import java.awt.Cursor;
 import javax.swing.border.CompoundBorder;
 import javax.swing.JTextPane;
@@ -33,23 +29,19 @@ import java.util.Locale;
 
 public class VerificarCategoria extends JFrame {
 
-	private JPanel contentPane;
-	private JTextField Peso;
+	private final JTextField Peso;
 
 	/**
 	 * Launch the application.
 	 */
 	public void abreVerificarCategoria() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VerificarCategoria frame = new VerificarCategoria();
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-					//frame.setUndecorated(true);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				VerificarCategoria frame = new VerificarCategoria();
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -196,12 +188,10 @@ public class VerificarCategoria extends JFrame {
 	public VerificarCategoria() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1360, 768);
-		contentPane = new JPanel()
-		{
-			public void paintComponent(Graphics g)
-			{
+		JPanel contentPane = new JPanel() {
+			public void paintComponent(Graphics g) {
 				Image img = Toolkit.getDefaultToolkit().getImage(
-						TelaInicial.class.getResource("/Imagem/Ufc.jpg"));
+						TelaInicial.class.getResource(new TelaInicial().imgPath));
 				g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
 			}
 		};
@@ -210,29 +200,23 @@ public class VerificarCategoria extends JFrame {
 		
 		JButton button = new JButton("Sair");
 		button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Fechar();
-			}
-		});
+		button.addActionListener(arg0 -> Fechar());
 		button.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
 		button.setBackground(Color.LIGHT_GRAY);
 		button.setAlignmentX(0.5f);
 		
 		JButton button_1 = new JButton("Voltar");
 		button_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Menu m = new Menu();
-				m.AbreMenu();
-				Fechar();
-			}
+		button_1.addActionListener(e -> {
+			Menu m = new Menu();
+			m.AbreMenu();
+			Fechar();
 		});
 		button_1.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
 		button_1.setBackground(Color.LIGHT_GRAY);
 		button_1.setAlignmentX(0.5f);
 		
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox<>();
 		comboBox.setName("Sexo");
 		comboBox.setBackground(Color.LIGHT_GRAY);
 		comboBox.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 15));
@@ -240,7 +224,7 @@ public class VerificarCategoria extends JFrame {
 		comboBox.addItem("Feminino");
 		comboBox.setSelectedItem(null);
 		
-		JComboBox comboBox_1 = new JComboBox();
+		JComboBox<String> comboBox_1 = new JComboBox<>();
 		comboBox_1.setBackground(Color.LIGHT_GRAY);
 		comboBox_1.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 15));
 		comboBox_1.addItem("Mosca");
@@ -280,25 +264,23 @@ public class VerificarCategoria extends JFrame {
 		
 		JButton btnVerificar = new JButton("Verificar categoria");
 		btnVerificar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnVerificar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(TestaString(Peso.getText())==true)
+		btnVerificar.addActionListener(e -> {
+			if(TestaString(Peso.getText()))
+			{
+				double peso = Double.parseDouble(Peso.getText());
+				if(comboBox.getSelectedItem()!=null)
 				{
-					double peso = Double.parseDouble(Peso.getText());
-					if(comboBox.getSelectedItem()!=null)
-					{
-						String sexo = (String) comboBox.getSelectedItem();
-						Categoria.setText(VerificaCategoria(peso, sexo));
-					}
-					else
-					{
-						JOptionPane.showMessageDialog(null, "Selecione o sexo");
-					}
+					String sexo = (String) comboBox.getSelectedItem();
+					Categoria.setText(VerificaCategoria(peso, sexo));
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Peso inválido");
+					JOptionPane.showMessageDialog(null, "Selecione o sexo");
 				}
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Peso inválido");
 			}
 		});
 		btnVerificar.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
@@ -307,45 +289,43 @@ public class VerificarCategoria extends JFrame {
 		
 		JButton btnVerificarQuantoFalta = new JButton("Verificar quanto falta");
 		btnVerificarQuantoFalta.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnVerificarQuantoFalta.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(TestaString(Peso.getText())==true)
+		btnVerificarQuantoFalta.addActionListener(e -> {
+			if(TestaString(Peso.getText()))
+			{
+				double peso = Double.parseDouble(Peso.getText());
+				if(comboBox.getSelectedItem()!=null)
 				{
-					double peso = Double.parseDouble(Peso.getText());
-					if(comboBox.getSelectedItem()!=null)
+					String sexo = (String) comboBox.getSelectedItem();
+					if(comboBox_1.getSelectedItem()!=null)
 					{
-						String sexo = (String) comboBox.getSelectedItem();
-						if(comboBox_1.getSelectedItem()!=null)
-						{
-						String categoriadesejada = (String) comboBox_1.getSelectedItem();
-						if(Pesos(categoriadesejada, sexo)>peso)
-						{
-							double pesonecessario = Pesos(categoriadesejada, sexo)-peso;
-							String peson = String.format("%.2f",pesonecessario);
-							Categoria.setText(peson);
-						}
-						else
-						{
-							if(sexo.equals("Feminino") && (categoriadesejada.equals("Leve")||categoriadesejada.equals("Meio-Médio")||categoriadesejada.equals("Médio")||categoriadesejada.equals("Meio-Pesado")||categoriadesejada.equals("Pesado")))
-							{
-								Categoria.setText("");
-							}
-							else
-							{
-							Categoria.setText("Já possui peso o suficiente para esta categoria");
-							}
-						}
-						}
+					String categoriadesejada = (String) comboBox_1.getSelectedItem();
+					if(Pesos(categoriadesejada, sexo)>peso)
+					{
+						double pesonecessario = Pesos(categoriadesejada, sexo)-peso;
+						String peson = String.format("%.2f",pesonecessario);
+						Categoria.setText(peson);
 					}
 					else
 					{
-						JOptionPane.showMessageDialog(null, "Selecione o sexo");
+						if(sexo.equals("Feminino") && (categoriadesejada.equals("Leve")||categoriadesejada.equals("Meio-Médio")||categoriadesejada.equals("Médio")||categoriadesejada.equals("Meio-Pesado")||categoriadesejada.equals("Pesado")))
+						{
+							Categoria.setText("");
+						}
+						else
+						{
+						Categoria.setText("Já possui peso o suficiente para esta categoria");
+						}
+					}
 					}
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(null, "Peso inválido");
+					JOptionPane.showMessageDialog(null, "Selecione o sexo");
 				}
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Peso inválido");
 			}
 		});
 		btnVerificarQuantoFalta.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));

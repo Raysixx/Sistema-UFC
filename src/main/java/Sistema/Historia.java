@@ -16,32 +16,24 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Cursor;
 import java.awt.Component;
 import java.util.Locale;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-import java.awt.event.ActionEvent;
 
-public class História extends JFrame {
-
-	private JPanel contentPane;
+public class Historia extends JFrame {
 
 	/**
 	 * Launch the application.
 	 */
 	public void AbreHistoria() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					História frame = new História();
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-					//frame.setUndecorated(true);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				Historia frame = new Historia();
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -55,16 +47,14 @@ public class História extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public História() {
+	public Historia() {
 		setTitle("Hist\u00F3ria");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1360, 768);
-		contentPane = new JPanel()
-		{
-			public void paintComponent(Graphics g)
-			{
+		JPanel contentPane = new JPanel() {
+			public void paintComponent(Graphics g) {
 				Image img = Toolkit.getDefaultToolkit().getImage(
-						TelaInicial.class.getResource("/Imagem/Ufc.jpg"));
+						TelaInicial.class.getResource(new TelaInicial().imgPath));
 				g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
 			}
 		};
@@ -72,23 +62,17 @@ public class História extends JFrame {
 		setContentPane(contentPane);
 		
 		JButton button = new JButton("Sair");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Fechar();
-			}
-		});
+		button.addActionListener(arg0 -> Fechar());
 		button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		button.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
 		button.setBackground(Color.LIGHT_GRAY);
 		button.setAlignmentX(0.5f);
 		
 		JButton btnVoltar = new JButton("Voltar");
-		btnVoltar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				TelaInicial t = new TelaInicial();
-				t.AbrirTela(1);
-				Fechar();
-			}
+		btnVoltar.addActionListener(e -> {
+			TelaInicial t = new TelaInicial();
+			t.AbrirTela(1);
+			Fechar();
 		});
 		btnVoltar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnVoltar.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));

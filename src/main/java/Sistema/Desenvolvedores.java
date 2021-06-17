@@ -14,31 +14,23 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Cursor;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 public class Desenvolvedores extends JFrame {
 
-	private JPanel contentPane;
-
 	/**
 	 * Launch the application.
 	 */
 	public void AbreDesenvolvedores(){
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Desenvolvedores frame = new Desenvolvedores();
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-					//frame.setUndecorated(true);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				Desenvolvedores frame = new Desenvolvedores();
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -56,12 +48,10 @@ public class Desenvolvedores extends JFrame {
 		setTitle("Desenvolvedores");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1360, 768);
-		contentPane = new JPanel()
-		{
-			public void paintComponent(Graphics g)
-			{
+		JPanel contentPane = new JPanel() {
+			public void paintComponent(Graphics g) {
 				Image img = Toolkit.getDefaultToolkit().getImage(
-						TelaInicial.class.getResource("/Imagem/Ufc.jpg"));
+						TelaInicial.class.getResource(new TelaInicial().imgPath));
 				g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
 			}
 		};
@@ -70,23 +60,17 @@ public class Desenvolvedores extends JFrame {
 		
 		JButton button = new JButton("Sair");
 		button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Fechar();
-			}
-		});
+		button.addActionListener(e -> Fechar());
 		button.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
 		button.setBackground(Color.LIGHT_GRAY);
 		button.setAlignmentX(0.5f);
 		
 		JButton button_1 = new JButton("Voltar");
 		button_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				TelaInicial t = new TelaInicial();
-				t.AbrirTela(1);
-				Fechar();
-			}
+		button_1.addActionListener(e -> {
+			TelaInicial t = new TelaInicial();
+			t.AbrirTela(1);
+			Fechar();
 		});
 		button_1.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
 		button_1.setBackground(Color.LIGHT_GRAY);

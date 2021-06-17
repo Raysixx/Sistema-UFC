@@ -1,6 +1,5 @@
 package Sistema;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -32,23 +31,19 @@ import javax.swing.JLabel;
 
 public class ListaEspecifica extends JFrame {
 
-	private JPanel contentPane;
-	private JTable table;
+	private final JTable table;
 
 	/**
 	 * Launch the application.
 	 */
 	public void AbreLista(Statement s) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ListaEspecifica frame = new ListaEspecifica(s);
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-					//frame.setUndecorated(true);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				ListaEspecifica frame = new ListaEspecifica(s);
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -66,12 +61,10 @@ public class ListaEspecifica extends JFrame {
 		setTitle("Lista Específica");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1360, 768);
-		contentPane = new JPanel()
-		{
-			public void paintComponent(Graphics g)
-			{
+		JPanel contentPane = new JPanel() {
+			public void paintComponent(Graphics g) {
 				Image img = Toolkit.getDefaultToolkit().getImage(
-						TelaInicial.class.getResource("/Imagem/Ufc.jpg"));
+						TelaInicial.class.getResource(new TelaInicial().imgPath));
 				g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
 			}
 		};
@@ -80,18 +73,16 @@ public class ListaEspecifica extends JFrame {
 		
 		JButton button_1 = new JButton("Voltar");
 		button_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Menu m = new Menu();
-				m.AbreMenu();
-				Fechar();
-			}
+		button_1.addActionListener(e -> {
+			Menu m = new Menu();
+			m.AbreMenu();
+			Fechar();
 		});
 		button_1.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
 		button_1.setBackground(Color.LIGHT_GRAY);
 		button_1.setAlignmentX(0.5f);
 		
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox<>();
 		comboBox.setBackground(Color.LIGHT_GRAY);
 		comboBox.setForeground(Color.BLACK);
 		comboBox.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 15));
@@ -143,11 +134,7 @@ public class ListaEspecifica extends JFrame {
 		lblCategoria.setFont(new Font("Arial", Font.PLAIN, 18));
 		
 		JButton button = new JButton("Sair");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Fechar();
-			}
-		});
+		button.addActionListener(arg0 -> Fechar());
 		button.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
 		button.setBackground(Color.LIGHT_GRAY);
 		button.setAlignmentX(0.5f);

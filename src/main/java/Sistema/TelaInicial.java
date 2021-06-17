@@ -1,47 +1,39 @@
 package Sistema;
 
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
-
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
-import java.awt.Font;
-import java.awt.Color;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.ActionEvent;
+import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 
 public class TelaInicial extends JFrame {
 
-	private JPanel contentPane;
+	String imgPath = "/Ufc.jpg";
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TelaInicial frame = new TelaInicial();
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-					//frame.setUndecorated(true);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				TelaInicial frame = new TelaInicial();
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -50,16 +42,13 @@ public class TelaInicial extends JFrame {
 	{
 		if(verifica==1)
 		{
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					try {
-						TelaInicial frame = new TelaInicial();
-						frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-						//frame.setUndecorated(true);
-						frame.setVisible(true);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+			EventQueue.invokeLater(() -> {
+				try {
+					TelaInicial frame = new TelaInicial();
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			});
 		}
@@ -78,20 +67,18 @@ public class TelaInicial extends JFrame {
 		setTitle("Tela Inicial");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1360, 768);
-		contentPane = new JPanel()
-				{
-					public void paintComponent(Graphics g)
-					{
-						Image img = Toolkit.getDefaultToolkit().getImage(
-								TelaInicial.class.getResource("/Imagem/Ufc.jpg"));
-						g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
-					}
-				};
+		JPanel contentPane = new JPanel() {
+			public void paintComponent(Graphics g) {
+				Image img = Toolkit.getDefaultToolkit().getImage(
+						TelaInicial.class.getResource(new TelaInicial().imgPath));
+				g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
+			}
+		};
 		contentPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JLabel lblVerso = new JLabel("Vers\u00E3o 1.0");
+		JLabel lblVerso = new JLabel("Versão 1.0");
 		lblVerso.setForeground(Color.WHITE);
 		lblVerso.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 18));
 		
@@ -101,22 +88,16 @@ public class TelaInicial extends JFrame {
 		
 		JButton btnSair = new JButton("Sair");
 		btnSair.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnSair.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Fechar();
-			}
-		});
+		btnSair.addActionListener(e -> Fechar());
 		btnSair.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
 		btnSair.setBackground(new Color(192, 192, 192));
 		btnSair.setAlignmentX(0.5f);
 		
-		JButton btnHistriaEDesenvolvedores = new JButton("Hist\u00F3ria do UFC");
-		btnHistriaEDesenvolvedores.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				História h = new História();
-				h.AbreHistoria();
-				Fechar();
-			}
+		JButton btnHistriaEDesenvolvedores = new JButton("História do UFC");
+		btnHistriaEDesenvolvedores.addActionListener(e -> {
+			Historia h = new Historia();
+			h.AbreHistoria();
+			Fechar();
 		});
 		btnHistriaEDesenvolvedores.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnHistriaEDesenvolvedores.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
@@ -124,12 +105,10 @@ public class TelaInicial extends JFrame {
 		btnHistriaEDesenvolvedores.setAlignmentX(0.5f);
 		
 		JButton btnDesenvolvedores = new JButton("Desenvolvedores");
-		btnDesenvolvedores.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Desenvolvedores d = new Desenvolvedores();
-				d.AbreDesenvolvedores();
-				Fechar();
-			}
+		btnDesenvolvedores.addActionListener(e -> {
+			Desenvolvedores d = new Desenvolvedores();
+			d.AbreDesenvolvedores();
+			Fechar();
 		});
 		btnDesenvolvedores.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnDesenvolvedores.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC, 12));
@@ -137,13 +116,10 @@ public class TelaInicial extends JFrame {
 		btnDesenvolvedores.setAlignmentX(0.5f);
 		
 		JButton btnNewButton = new JButton("Entrar no sistema");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				    JOptionPane.showMessageDialog(null, "Conectando...");
-					Menu m = new Menu();
-					m.AbreMenu();
-					Fechar();
-			}
+		btnNewButton.addActionListener(e -> {
+				Menu m = new Menu();
+				m.AbreMenu();
+				Fechar();
 		});
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));

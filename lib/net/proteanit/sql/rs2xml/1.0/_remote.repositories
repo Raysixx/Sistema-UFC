@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Fri Jun 18 11:57:17 GMT-03:00 2021
+rs2xml-1.0.jar>=
+rs2xml-1.0.pom>=
+rs2xml-1.0.pom>Local\ repository=
